@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const SignUpPage = () => {
+const API = import.meta.env.VITE_API_URL;
+
+const LoginPage = () => {
   const [formData, setFormData] = useState({
-    fullName: "",
     email: "",
     password: "",
-    confirmPassword: "",
   });
 
   const navigate = useNavigate();
@@ -22,23 +22,17 @@ const SignUpPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match!");
-      return;
-    }
-
     try {
-      const res = await axios.post("http://localhost:3000/api/auth/signup", {
-        name: formData.fullName,
+      const response = await axios.post(`${API}/api/auth/login`, {
         email: formData.email,
         password: formData.password,
       });
 
-      console.log("Signup successful:", res.data);
-      navigate("/home"); // redirect to home on success
-    } catch (err) {
-      console.error("Signup failed:", err);
-      alert(err);
+      console.log("Login successful:", response.data);
+      navigate("/home");
+    } catch (error) {
+      console.error("Login failed:", error);
+      alert("Invalid email or password.");
     }
   };
 
@@ -47,26 +41,12 @@ const SignUpPage = () => {
       <section className="bg-gray-100 flex items-center justify-center min-h-screen">
         <div className="bg-white shadow-md rounded-lg p-8 max-w-md w-full">
           <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
-            Create Your Account👟
+            Welcome to Minishop👟
           </h2>
           <p className="text-gray-500 text-sm mb-6 text-center">
-            Join Minishop and step into style
+            Login to your Minishop account
           </p>
           <form onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="block mb-1 text-gray-600 font-medium">
-                Full Name
-              </label>
-              <input
-                type="text"
-                name="fullName"
-                value={formData.fullName}
-                onChange={handleChange}
-                placeholder="John Doe"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:outline-none"
-                required
-              />
-            </div>
             <div>
               <label className="block mb-1 text-gray-600 font-medium">
                 Email
@@ -95,31 +75,26 @@ const SignUpPage = () => {
                 required
               />
             </div>
-            <div>
-              <label className="block mb-1 text-gray-600 font-medium">
-                Confirm Password
+            <div className="flex items-center justify-between">
+              <label className="flex items-center text-sm">
+                <input type="checkbox" className="mr-2 text-yellow-600" />{" "}
+                Remember me
               </label>
-              <input
-                type="password"
-                name="confirmPassword"
-                value={formData.confirmPassword}
-                onChange={handleChange}
-                placeholder="********"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:outline-none"
-                required
-              />
+              <a href="#" className="text-sm text-yellow-600 hover:underline">
+                Forgot password?
+              </a>
             </div>
             <button
               type="submit"
               className="w-full bg-yellow-600 text-white py-2 rounded-md hover:bg-yellow-700 transition duration-200"
             >
-              Sign Up
+              Login
             </button>
           </form>
           <p className="text-sm text-center mt-6 text-gray-500">
-            Already have an account?{" "}
-            <Link to="/login" className="text-yellow-600 hover:underline">
-              Login
+            Don't have an account?{" "}
+            <Link to="/signup" className="text-yellow-600 hover:underline">
+              Sign up
             </Link>
           </p>
         </div>
@@ -128,4 +103,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default LoginPage;

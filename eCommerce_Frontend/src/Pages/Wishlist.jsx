@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 
+const API = import.meta.env.VITE_API_URL;
+
 const Wishlist = () => {
   const [wishlistItems, setWishlistItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
   // Fetch from API
   useEffect(() => {
-    fetch("http://localhost:3000/api/wishlist")
+    fetch(`${API}/api/wishlist`)
       .then((res) => res.json())
       .then((data) => {
         setWishlistItems(data);

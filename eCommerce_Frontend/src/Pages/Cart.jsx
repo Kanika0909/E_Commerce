@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+const API = import.meta.env.VITE_API_URL;
+
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
 
@@ -11,7 +13,7 @@ const Cart = () => {
 
   const fetchCart = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/cart");
+      const res = await axios.get(`${API}/api/cart`);
       setCartItems(res.data);
     } catch (err) {
       console.error("Error fetching cart items:", err);
@@ -21,7 +23,7 @@ const Cart = () => {
   // Increment quantity
   const handleIncrement = async (id) => {
     try {
-      await axios.patch(`http://localhost:3000/api/cart/increment/${id}`);
+      await axios.patch(`${API}/api/cart/increment/${id}`);
       fetchCart();
     } catch (err) {
       console.error("Error incrementing quantity:", err);
@@ -31,7 +33,7 @@ const Cart = () => {
   // Decrement quantity
   const handleDecrement = async (id) => {
     try {
-      await axios.patch(`http://localhost:3000/api/cart/decrement/${id}`);
+      await axios.patch(`${API}/api/cart/decrement/${id}`);
       fetchCart();
     } catch (err) {
       console.error("Error decrementing quantity:", err);
@@ -41,7 +43,7 @@ const Cart = () => {
   // Remove item from cart
   const handleRemove = async (id) => {
     try {
-      await axios.delete(`http://localhost:3000/api/cart/${id}`);
+      await axios.delete(`${API}/api/cart/${id}`);
       fetchCart();
     } catch (err) {
       console.error("Error removing item:", err);

@@ -10,6 +10,8 @@ import customerphotoimg from "./../assets/images/customer_photo.jpg";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
+const API = import.meta.env.VITE_API_URL;
+
 const Home = () => {
 
   const [wishlist, setWishlist] = useState([]);
@@ -18,11 +20,11 @@ const Home = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3000/api/wishlist")
+      .get(`${API}/api/wishlist`)
       .then((res) => setWishlist(res.data.map((item) => item.id)))
       .catch((err) => console.error("Error fetching wishlist:", err));
     axios
-      .get("http://localhost:3000/api/cart")
+      .get(`${API}/api/cart`)
       .then((res) => setCart(res.data.map((item) => item.id)))
       .catch((err) => console.error("Error fetching cart:", err));
   }, []);
@@ -30,14 +32,14 @@ const Home = () => {
   const handleWishlistToggle = (product) => {
     if (wishlist.includes(product.id)) {
       axios
-        .delete(`http://localhost:3000/api/wishlist/${product.id}`)
+        .delete(`${API}/api/wishlist/${product.id}`)
         .then(() =>
-          setWishlist((prev) => prev.filter((id) => id !== product.id))
+          setWishlist((prev) => prev.filter((id) => id !== product.id)),
         )
         .catch((err) => console.error("Error removing from wishlist:", err));
     } else {
       axios
-        .post("http://localhost:3000/api/wishlist", product)
+        .post(`${API}/api/wishlist`, product)
         .then(() => setWishlist((prev) => [...prev, product.id]))
         .catch((err) => console.error("Error adding to wishlist:", err));
     }
@@ -46,12 +48,12 @@ const Home = () => {
   const handleAddToCart = (product) => {
     if (cart.includes(product.id)) {
       axios
-        .delete(`http://localhost:3000/api/cart/${product.id}`)
+        .delete(`${API}/api/cart/${product.id}`)
         .then(() => setCart((prev) => prev.filter((id) => id !== product.id)))
         .catch((err) => console.error("Error removing from cart:", err));
     } else {
       axios
-        .post("http://localhost:3000/api/cart", product)
+        .post(`${API}/api/cart`, product)
         .then(() => setCart((prev) => [...prev, product.id]))
         .catch((err) => console.error("Error adding to cart:", err));
     }

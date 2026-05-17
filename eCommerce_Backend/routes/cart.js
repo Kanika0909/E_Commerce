@@ -16,7 +16,7 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
   const item = req.body;
   try {
-    let existingItem = await Cart.findOne({ id: item.id });
+    let existingItem = await Cart.findOne({ id: Number(req.params.id) });;
     if (existingItem) {
       existingItem.quantity += 1;
       await existingItem.save();
@@ -39,7 +39,7 @@ router.post("/", async (req, res) => {
 // Increment quantity
 router.patch("/increment/:id", async (req, res) => {
   try {
-    const item = await Cart.findOne({ id: req.params.id });
+    const item = await Cart.findOne({ id: Number(req.params.id) });;
     if (!item) return res.status(404).json({ error: "Item not found" });
 
     item.quantity += 1;
@@ -53,7 +53,7 @@ router.patch("/increment/:id", async (req, res) => {
 // Decrement quantity
 router.patch("/decrement/:id", async (req, res) => {
   try {
-    const item = await Cart.findOne({ id: req.params.id });
+    const item = await Cart.findOne({ id: Number(req.params.id) });;
     if (!item) return res.status(404).json({ error: "Item not found" });
 
     if (item.quantity > 1) {
@@ -72,7 +72,7 @@ router.patch("/decrement/:id", async (req, res) => {
 // Delete item
 router.delete("/:id", async (req, res) => {
   try {
-    await Cart.deleteOne({ id: req.params.id });
+    await Cart.findOne({ id: Number(req.params.id) });;
     res.json({ message: "Item removed from cart" });
   } catch (err) {
     res.status(500).json({ error: "Failed to delete item" });

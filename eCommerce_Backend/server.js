@@ -12,7 +12,12 @@ dotenv.config();
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "e-commerce-beige-seven-53.vercel.app",
+    credentials: true,
+  }),
+);
 app.use(bodyParser.json());
 
 mongoose

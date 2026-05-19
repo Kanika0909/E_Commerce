@@ -46,6 +46,17 @@ const Home = () => {
   };
 
   const handleAddToCart = (product) => {
+    const cartItem = {
+      id: Number(product.id),
+      title: product.title,
+      price: product.price,
+      originalPrice: product.originalPrice,
+      image: product.image,
+      quantity: 1,
+    };
+
+    console.log(cartItem);
+
     if (cart.includes(product.id)) {
       axios
         .delete(`${API}/api/cart/${product.id}`)
@@ -53,7 +64,7 @@ const Home = () => {
         .catch((err) => console.error("Error removing from cart:", err));
     } else {
       axios
-        .post(`${API}/api/cart`, product)
+        .post(`${API}/api/cart`, cartItem)
         .then(() => setCart((prev) => [...prev, product.id]))
         .catch((err) => console.error("Error adding to cart:", err));
     }

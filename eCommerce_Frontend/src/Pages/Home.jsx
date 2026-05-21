@@ -47,7 +47,7 @@ const Home = () => {
 
   const handleAddToCart = (product) => {
     const cartItem = {
-      id: Number(product.id),
+      id: product.id,
       title: product.title,
       price: product.price,
       originalPrice: product.originalPrice,
